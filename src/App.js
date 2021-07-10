@@ -10,7 +10,8 @@ function App() {
     <>
 
     {/* Router contains all of the routes for the pages/paths */}
-    <Router>      
+    <Router>    
+        time  
       <Switch>
 
         <Route path='/games/tictactoe/'><TicTacToe /></Route>

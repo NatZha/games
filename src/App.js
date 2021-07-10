@@ -13,7 +13,7 @@ function App() {
     <Router>      
       <Switch>
 
-        <Route path='/games/tictactoe/' exact component={TicTacToe}/>
+        <Route path='/games/tictactoe/' component={TicTacToe}/>
 
       </Switch>
 

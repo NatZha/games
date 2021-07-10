@@ -40,12 +40,12 @@ body {
     background: #ddd;
   }
   
-  .game {
+  .tictactoe {
     display: flex;
     flex-direction: row;
   }
   
-  .game-info {
+  .tictactoe-info {
     margin-left: 20px;
   }
   

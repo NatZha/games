@@ -15,6 +15,9 @@ function Home() {
                 </li>
             </ul>
 
+            <a target='_blank' href="https://stackoverflow.com/questions/27928372/react-router-urls-dont-work-when-refreshing-or-writing-manually">Why it doesnt work</a>
+            The pages do not work because it implements a history of the game, which does not work on html5. Should instead consider using hash history
+
         </div>
     )
 }

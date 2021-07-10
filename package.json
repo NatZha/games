@@ -1,8 +1,8 @@
 {
-  "name": "tictactoe",
+  "name": "tictactoe2",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://natzha.github.io/tictactoe",
+  "homepage": "https://natzha.github.io/tictactoe2",
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.6",
     "@testing-library/react": "^11.2.2",

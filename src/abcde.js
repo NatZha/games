@@ -56,33 +56,33 @@ class abcde extends Component {
 
         // this.alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
 
-        this.alphabet = [ 
-            {letter:'a', state: false}, 
-            {letter:'b', state: false}, 
-            {letter:'c', state: false}, 
-            {letter:'d', state: false}, 
-            {letter:'e', state: false}, 
-            {letter:'f', state: false}, 
-            {letter:'g', state: false}, 
-            {letter:'h', state: false}, 
-            {letter:'i', state: false}, 
-            {letter:'j', state: false}, 
-            {letter:'k', state: false}, 
-            {letter:'l', state: false}, 
-            {letter:'m', state: false}, 
-            {letter:'n', state: false}, 
-            {letter:'o', state: false}, 
-            {letter:'p', state: false}, 
-            {letter:'q', state: false}, 
-            {letter:'r', state: false}, 
-            {letter:'s', state: false}, 
-            {letter:'t', state: false}, 
-            {letter:'u', state: false}, 
-            {letter:'v', state: false}, 
-            {letter:'w', state: false}, 
-            {letter:'x', state: false}, 
-            {letter:'y', state: false}, 
-            {letter:'z', state: false}
+        this.alphabet = [
+            { letter: 'A ', state: false },
+            { letter: 'B ', state: false },
+            { letter: 'C ', state: false },
+            { letter: 'D ', state: false },
+            { letter: 'E ', state: false },
+            { letter: 'F ', state: true },
+            { letter: 'G ', state: false },
+            { letter: 'H ', state: false },
+            { letter: 'I ', state: false },
+            { letter: 'J ', state: false },
+            { letter: 'K ', state: false },
+            { letter: 'L ', state: false },
+            { letter: 'M ', state: false },
+            { letter: 'N ', state: false },
+            { letter: 'O ', state: false },
+            { letter: 'P ', state: false },
+            { letter: 'Q ', state: false },
+            { letter: 'R ', state: false },
+            { letter: 'S ', state: false },
+            { letter: 'T ', state: false },
+            { letter: 'U ', state: false },
+            { letter: 'V ', state: false },
+            { letter: 'W ', state: false },
+            { letter: 'X ', state: false },
+            { letter: 'Y ', state: false },
+            { letter: 'Z ', state: false }
         ]
     }
 
@@ -106,7 +106,7 @@ class abcde extends Component {
         Array.from(document.querySelectorAll("input")).forEach(
             input => (input.value = "")
         );
-        
+
         // empty state array
         this.setState({
             value: "",
@@ -118,27 +118,22 @@ class abcde extends Component {
     }
 
 
-    displayAlphabet() {
-        const alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
-        var alphabetString = alphabet.join(' ');
+    setStyle(name, item) {
+        if (name === "alphabetList") {
+            return { color: this.alphabet[item].state ? 'green' : 'red' }
+        }
+    }
 
+    displayAlphabet() {
         return (
             Object.keys(this.alphabet).map(item => {
-                console.log("BBBBBBBBBBB", this.alphabet[item].letter);
                 return (
-                    <div>
+                    <span style={this.setStyle("alphabetList", item)}>
                         {this.alphabet[item].letter}
-                    </div>
+                    </span>
                 )
             })
         )
-
-        return (
-            <div>
-                {alphabetString}
-            </div>
-        );
-
     }
 
 
@@ -168,7 +163,7 @@ class abcde extends Component {
                 <h3>The goal of this game is to see how fast a person can type the english alphabet</h3>
 
                 {this.displayAlphabet()}
-
+                <br></br>
                 {/* <input id='inputField' type="text" onChange={this.handleChange} ref={(input) => this.myinput = input} /> */}
                 <input id='inputField' type="text" onChange={this.handleChange}></input>
 
@@ -177,7 +172,7 @@ class abcde extends Component {
                 <br></br>
                 ---
                 <br></br>
-                
+
                 {this.displayPerLetterTime()}
 
                 <button id='resetGame' type="submit" onClick={this.resetGame} >Reset Game</button>

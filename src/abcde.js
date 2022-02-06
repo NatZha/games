@@ -54,7 +54,36 @@ class abcde extends Component {
         this.resetGame = this.resetGame.bind(this);
         this.handleChange = this.handleChange.bind(this);
 
+        // this.alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
 
+        this.alphabet = [ 
+            {letter:'a', state: false}, 
+            {letter:'b', state: false}, 
+            {letter:'c', state: false}, 
+            {letter:'d', state: false}, 
+            {letter:'e', state: false}, 
+            {letter:'f', state: false}, 
+            {letter:'g', state: false}, 
+            {letter:'h', state: false}, 
+            {letter:'i', state: false}, 
+            {letter:'j', state: false}, 
+            {letter:'k', state: false}, 
+            {letter:'l', state: false}, 
+            {letter:'m', state: false}, 
+            {letter:'n', state: false}, 
+            {letter:'o', state: false}, 
+            {letter:'p', state: false}, 
+            {letter:'q', state: false}, 
+            {letter:'r', state: false}, 
+            {letter:'s', state: false}, 
+            {letter:'t', state: false}, 
+            {letter:'u', state: false}, 
+            {letter:'v', state: false}, 
+            {letter:'w', state: false}, 
+            {letter:'x', state: false}, 
+            {letter:'y', state: false}, 
+            {letter:'z', state: false}
+        ]
     }
 
 
@@ -88,6 +117,31 @@ class abcde extends Component {
         console.log('Your input value is: ' + this.state.value)
     }
 
+
+    displayAlphabet() {
+        const alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+        var alphabetString = alphabet.join(' ');
+
+        return (
+            Object.keys(this.alphabet).map(item => {
+                console.log("BBBBBBBBBBB", this.alphabet[item].letter);
+                return (
+                    <div>
+                        {this.alphabet[item].letter}
+                    </div>
+                )
+            })
+        )
+
+        return (
+            <div>
+                {alphabetString}
+            </div>
+        );
+
+    }
+
+
     displayPerLetterTime() {
         // return what inside this, .map is a for loop around all of the this.state.time
         return this.state.time && this.state.time.map((_, index) => {
@@ -113,9 +167,10 @@ class abcde extends Component {
 
                 <h3>The goal of this game is to see how fast a person can type the english alphabet</h3>
 
-                
-                <input id='inputField' type="text" onChange={this.handleChange} ref={(input) => this.myinput = input} />
-                {/* <input id='inputField' type="text" onChange={(e) => { this.handleChange(e) }}>{this.state.value[-1]}</input> */}
+                {this.displayAlphabet()}
+
+                {/* <input id='inputField' type="text" onChange={this.handleChange} ref={(input) => this.myinput = input} /> */}
+                <input id='inputField' type="text" onChange={this.handleChange}></input>
 
                 <ul>{this.state.letter.at(-1)}  {this.state.time.at(-1)}</ul>
 
@@ -125,7 +180,7 @@ class abcde extends Component {
                 
                 {this.displayPerLetterTime()}
 
-                <button id='resetGame' type="submit" onClick={(e) => {this.resetGame();}} >Reset Game</button>
+                <button id='resetGame' type="submit" onClick={this.resetGame} >Reset Game</button>
             </div>
         )
     }

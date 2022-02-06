@@ -111,9 +111,9 @@ class abcde extends Component {
     handleChange(e) {       
         this.setState(
             {
-                value: e.target.value,
-                letter: e.target.value.replace(this.state.value, ""), 
-                time: e.timeStamp, 
+                value: [...this.state.value, e.target.value],
+                letter: [...this.state.letter, e.target.value.replace(this.state.value.at(-1), "")], 
+                time: [...this.state.time, e.timeStamp], 
             }
         )
         console.log('handle change called\n', e)
@@ -131,11 +131,29 @@ class abcde extends Component {
     render() {
         return (
             <div>
+                <h2>ALPHABET GAME</h2>
+                
+                <h3>The goal of this game is to see how fast a person can type the english alphabet</h3>
+
                 <input type="text" onChange={(e) => { this.handleChange(e) }} ref={(input) => this.myinput = input} />
 
                 <input readOnly value={this.state.value}/>
 
-                <p>{this.state.letter}  {this.state.time}</p>
+                <ul>{this.state.letter.at(-1)}  {this.state.time.at(-1)}</ul>
+
+                {/* create new line for  every element in array */}
+                { this.state.letter && this.state.letter.map(
+                    itr => <p>{itr}</p>
+                )}
+
+                <ul>
+                    {this.state.value && this.state.value.map(item =>
+                        <li key="{item}">{item}</li>
+                    )}
+                </ul>
+
+
+
 
                 <button type="submit" onClick={this.handleSubmit} >A BUTTON</button>
             </div>

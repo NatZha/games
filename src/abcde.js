@@ -53,6 +53,7 @@ class abcde extends Component {
         // callback functions, this binding is necessary to make 'this' work in the callback
         this.resetGame = this.resetGame.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.nextLetter = 'B'
 
         // this.alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
 
@@ -92,13 +93,12 @@ class abcde extends Component {
         this.setState(
             {
                 value: [...this.state.value, e.target.value],
-                letter: [...this.state.letter, e.target.value.replace(this.state.value.at(-1), "")],
+                letter: [...this.state.letter, e.target.value.replace(this.state.value.at(-1), "").toUpperCase()],
                 time: [...this.state.time, e.timeStamp],
             }
         )
-        console.log('handle change called\n', e)
-        console.log(e.timeStamp, e.target.value)            // time that the letter is typed out based on page load time
-        console.log(this.state.value, this.state.letter, this.state.time)
+
+        this.gameLogic()
     }
 
     resetGame() {
@@ -117,6 +117,48 @@ class abcde extends Component {
         console.log('Your input value is: ' + this.state.value)
     }
 
+
+    runningTime() {
+        return new Date().getTime() - this.initialTime
+    }
+
+    gameLogic() {
+        // this.alphabet 
+
+        // this.state
+        let latestLetter = this.state.letter[this.state.time.length-1]
+        // check it is  letter
+        console.log("letter", latestLetter)
+        if ( latestLetter && latestLetter.length === 1 && latestLetter.match(/[a-z]/i) ){
+            this.currentLetter = latestLetter
+        }
+
+        if(this.currentLetter === 'A'){
+            this.initialTime = new Date().getTime()
+            this.nextLetter = 'B'
+            console.log('start game')
+        }
+
+        Object.keys(this.alphabet).map(item => {
+            console.log(item, this.alphabet[item].letter)
+            
+            if (this.currentLetter == this.alphabet[item].letter) {
+                this.nextLetter = this.alphabet[item+1].letter
+            }
+
+
+
+            if ( this.current === item ){
+
+                this.currentLetter = item
+                console.log(this.currentLetter)
+            }
+
+        })
+
+        // if this.currentLetter = latestLetter, nextletter = itme+1
+
+    }
 
     setStyle(name, item) {
         if (name === "alphabetList") {
@@ -142,14 +184,18 @@ class abcde extends Component {
         return this.state.time && this.state.time.map((_, index) => {
 
             // reverse the array
-            const time_reverse = this.state.time[this.state.time.length - 1 - index]
-            const letter_reverse = this.state.letter[this.state.letter.length - 1 - index]
+            let time_reverse = this.state.time[this.state.time.length - 1 - index]
+            let letter_reverse = this.state.letter[this.state.letter.length - 1 - index]
+            let prev_time_reverse = this.state.time[this.state.time.length - 2 - index]
 
-            console.log(index, time_reverse, letter_reverse)
+            if ((this.state.time.length - 1 - index) === 0 ) {
+                time_reverse = 0
+                prev_time_reverse = 0
+            }
 
             return (
                 <ul id='LetterTime'>
-                    {letter_reverse} - {time_reverse}
+                    {letter_reverse} - {time_reverse - prev_time_reverse}
                 </ul>
             )
         })
@@ -162,7 +208,12 @@ class abcde extends Component {
 
                 <h3>The goal of this game is to see how fast a person can type the english alphabet</h3>
 
+                {this.gameLogic()}
+                
+                <button id='resetGame' type="submit" onClick={this.resetGame} >Reset Game</button>
+
                 {this.displayAlphabet()}
+
                 <br></br>
                 {/* <input id='inputField' type="text" onChange={this.handleChange} ref={(input) => this.myinput = input} /> */}
                 <input id='inputField' type="text" onChange={this.handleChange}></input>
@@ -175,7 +226,6 @@ class abcde extends Component {
 
                 {this.displayPerLetterTime()}
 
-                <button id='resetGame' type="submit" onClick={this.resetGame} >Reset Game</button>
             </div>
         )
     }

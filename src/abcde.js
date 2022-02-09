@@ -44,17 +44,20 @@ class abcde extends Component {
 
     constructor(props) {
         super(props)            // must fcall super constructor before using this in derived class constructor
-        this.state = {
+        this.incomingStream = {
             value: '',
             letter: '',
+            letterArray: '',
             time: '',
         }
 
         // callback functions, this binding is necessary to make 'this' work in the callback
         this.resetGame = this.resetGame.bind(this);
         this.handleChange = this.handleChange.bind(this);
-        this.nextLetter = 'B'
-
+        this.updateState = this.updateState.bind(this);
+        this.nextLetterIterator = 0
+        this.gameStarting = true
+        
         // this.alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
 
         this.alphabet = [
@@ -63,7 +66,7 @@ class abcde extends Component {
             { letter: 'C ', state: false },
             { letter: 'D ', state: false },
             { letter: 'E ', state: false },
-            { letter: 'F ', state: true },
+            { letter: 'F ', state: false },
             { letter: 'G ', state: false },
             { letter: 'H ', state: false },
             { letter: 'I ', state: false },
@@ -90,13 +93,28 @@ class abcde extends Component {
 
     // do something with the new change
     handleChange(e) {
-        this.setState(
-            {
-                value: [...this.state.value, e.target.value],
-                letter: [...this.state.letter, e.target.value.replace(this.state.value.at(-1), "").toUpperCase()],
-                time: [...this.state.time, e.timeStamp],
-            }
-        )
+        // this.setState(
+        //     {
+        //         value: [...this.incomingStream.value, e.target.value],
+        //         letter: [...this.incomingStream.letter, e.target.value.replace(this.incomingStream.value.at(-1), "").toUpperCase()],
+        //         time: [...this.incomingStream.time, e.timeStamp],
+        //     }
+        // )
+
+        // this.setState({
+        //     value: [...this.incomingStream.value, e.target.value],
+        //     letter: [...this.incomingStream.letter, e.target.value.replace(this.incomingStream.value.at(-1), "").toUpperCase()],
+        //     time: [...this.incomingStream.time, e.timeStamp],
+        // }, function () {
+        //     console.log("ARE WERE THERE YET", this.incomingStream);
+        // });
+
+        // console.log("start0", this.incomingStream)
+
+        this.incomingStream.letter = e.target.value.replace(this.incomingStream.value.at(-1), "").toUpperCase()
+        this.incomingStream.letterArray = [...this.incomingStream.letterArray, this.incomingStream.letter]
+        this.incomingStream.value = [...this.incomingStream.value, e.target.value]
+        this.incomingStream.time = [...this.incomingStream.time, e.timeStamp]
 
         this.gameLogic()
     }
@@ -107,14 +125,53 @@ class abcde extends Component {
             input => (input.value = "")
         );
 
+        
+        Object.keys(this.alphabet).map(item => {
+            this.alphabet[item].state = false
+        })
+        
+        this.gameStarting = true
+        this.nextLetterIterator = 0
+        
+
+        console.log('Your input value is: ' + this.incomingStream.value)
+        
+        // const removeDiv = useCallback((itemId) => {
+        //     // filter out the div which matches the ID
+        //     setItems(items.filter((id) => id !== itemId));
+        //   }, [items]);
+
+        // removeDiv('LetterTime')
+
+        
         // empty state array
-        this.setState({
+        return(this.setState({
             value: "",
             letter: "",
             time: "",
-        })
+        }))
+    }
 
-        console.log('Your input value is: ' + this.state.value)
+
+    // gameEnd() {
+
+
+    //     // press to reset game
+    // }
+
+    updateState() {
+        console.log('updateState now')
+
+        // this.alphabet.setState(
+        //     this.alphabet[this.nextLetterIterator - 1].state = true
+
+        // )
+        // this.incomingStream.letter
+       // empty state array
+    //    return(
+           this.setState({1:"1"})
+
+    //    )
     }
 
 
@@ -125,38 +182,53 @@ class abcde extends Component {
     gameLogic() {
         // this.alphabet 
 
-        // this.state
-        let latestLetter = this.state.letter[this.state.time.length-1]
+        // this.incomingStream
+        let latestLetter = this.incomingStream.letter
+
         // check it is  letter
-        console.log("letter", latestLetter)
-        if ( latestLetter && latestLetter.length === 1 && latestLetter.match(/[a-z]/i) ){
-            this.currentLetter = latestLetter
-        }
+        console.log("letter", latestLetter, this.nextLetterIterator)
 
-        if(this.currentLetter === 'A'){
+
+
+        // if ( latestLetter && latestLetter.length === 1 && latestLetter.match(/[a-z]/i) ){
+        //     this.currentLetter = latestLetter
+        // }
+
+        // if letter is A, start game
+        if(latestLetter === 'A' && this.gameStarting){
             this.initialTime = new Date().getTime()
-            this.nextLetter = 'B'
-            console.log('start game')
+            
+            this.alphabet[this.nextLetterIterator].state = true
+
+            
+            
+            this.nextLetterIterator = this.nextLetterIterator + 1
+            this.gameStarting = false 
+            console.log('start game', this.alphabet)
         }
 
-        Object.keys(this.alphabet).map(item => {
-            console.log(item, this.alphabet[item].letter)
-            
-            if (this.currentLetter == this.alphabet[item].letter) {
-                this.nextLetter = this.alphabet[item+1].letter
+
+
+        console.log("INCREMENT", latestLetter + " ", this.alphabet[this.nextLetterIterator].letter)
+        if( (latestLetter + " ") === this.alphabet[this.nextLetterIterator].letter ) {
+
+
+            console.log("we should only be here if correct: ", latestLetter)
+            if( this.alphabet[this.nextLetterIterator - 1].state === true ){
+
+                this.alphabet[this.nextLetterIterator].state = true
+
+                this.nextLetterIterator = this.nextLetterIterator + 1
+
+                if( latestLetter === 'Z' ){
+                    console.log('game end')
+                    this.gameEnd()
+                    
+                }
             }
 
+        }
 
-
-            if ( this.current === item ){
-
-                this.currentLetter = item
-                console.log(this.currentLetter)
-            }
-
-        })
-
-        // if this.currentLetter = latestLetter, nextletter = itme+1
 
     }
 
@@ -180,15 +252,16 @@ class abcde extends Component {
 
 
     displayPerLetterTime() {
-        // return what inside this, .map is a for loop around all of the this.state.time
-        return this.state.time && this.state.time.map((_, index) => {
+        console.log('displayPerLetterTime')
+        // return what inside this, .map is a for loop around all of the this.incomingStream.time
+        return this.incomingStream.time && this.incomingStream.time.map((_, index) => {
 
             // reverse the array
-            let time_reverse = this.state.time[this.state.time.length - 1 - index]
-            let letter_reverse = this.state.letter[this.state.letter.length - 1 - index]
-            let prev_time_reverse = this.state.time[this.state.time.length - 2 - index]
+            let time_reverse = this.incomingStream.time[this.incomingStream.time.length - 1 - index]
+            let letter_reverse = this.incomingStream.letterArray[this.incomingStream.letterArray.length - 1 - index]
+            let prev_time_reverse = this.incomingStream.time[this.incomingStream.time.length - 2 - index]
 
-            if ((this.state.time.length - 1 - index) === 0 ) {
+            if ((this.incomingStream.time.length - 1 - index) === 0 ) {
                 time_reverse = 0
                 prev_time_reverse = 0
             }
@@ -208,17 +281,17 @@ class abcde extends Component {
 
                 <h3>The goal of this game is to see how fast a person can type the english alphabet</h3>
 
-                {this.gameLogic()}
-                
                 <button id='resetGame' type="submit" onClick={this.resetGame} >Reset Game</button>
 
+                <div id='alphabet' onKeyUp={this.displayAlphabet()}></div>
                 {this.displayAlphabet()}
 
                 <br></br>
                 {/* <input id='inputField' type="text" onChange={this.handleChange} ref={(input) => this.myinput = input} /> */}
-                <input id='inputField' type="text" onChange={this.handleChange}></input>
+                {/* <input id='inputField' type="text" onChange={this.handleChange} ></input> */}
+                <input id='inputField' type="text" onChange={this.handleChange} onKeyUp={this.updateState}></input>
 
-                <ul>{this.state.letter.at(-1)}  {this.state.time.at(-1)}</ul>
+                <ul>{this.incomingStream.letterArray.at(-1)}  {this.incomingStream.time.at(-1)}</ul>
 
                 <br></br>
                 ---

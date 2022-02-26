@@ -2,44 +2,6 @@ import { Component } from 'react';
 import React from 'react'
 import './App.js';
 
-
-
-// const phone = document.getElementById("phone");
-// const button = document.getElementsByTagName('button')[0];
-// const errorMessage = document.querySelector('p.error');
-
-// button.addEventListener('click', (e) => {
-//     if (phone == null){
-//         errorMessage.textContent = "Phone is Null";
-//     }
-//     if (!phone.validity.valid) {
-//         showError();
-//         e.preventDefault();
-//     }
-// });
-
-// phone.addEventListener('keyup', (e) => {
-//     if (phone.validity.valid) {
-//         errorMessage.innerHTML = '';
-//     } else {
-//         showError();
-//     }
-// });
-
-// function showError() {
-//     if (phone.validity.valueMissing) {
-//         errorMessage.textContent = "Phone is required";
-//     }
-//     if (phone.validity.patternMismatch) {
-//         errorMessage.textContent = "You are not supposed to use characters like this one: " + phone.value;
-//     }
-//     if (phone.validity.valid) {
-//         phone.setCustomValidity("");
-//     }
-// }
-
-
-
 class abcde extends Component {
 
     constructor(props) {
@@ -52,14 +14,12 @@ class abcde extends Component {
         }
 
         // callback functions, this binding is necessary to make 'this' work in the callback
-        this.resetGame = this.resetGame.bind(this);
+        this.gameReset = this.gameReset.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.updateState = this.updateState.bind(this);
         this.nextLetterIterator = 0
         this.gameStarting = true
         
-        // this.alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
-
         this.alphabet = [
             { letter: 'A ', state: false },
             { letter: 'B ', state: false },
@@ -93,24 +53,6 @@ class abcde extends Component {
 
     // do something with the new change
     handleChange(e) {
-        // this.setState(
-        //     {
-        //         value: [...this.incomingStream.value, e.target.value],
-        //         letter: [...this.incomingStream.letter, e.target.value.replace(this.incomingStream.value.at(-1), "").toUpperCase()],
-        //         time: [...this.incomingStream.time, e.timeStamp],
-        //     }
-        // )
-
-        // this.setState({
-        //     value: [...this.incomingStream.value, e.target.value],
-        //     letter: [...this.incomingStream.letter, e.target.value.replace(this.incomingStream.value.at(-1), "").toUpperCase()],
-        //     time: [...this.incomingStream.time, e.timeStamp],
-        // }, function () {
-        //     console.log("ARE WERE THERE YET", this.incomingStream);
-        // });
-
-        // console.log("start0", this.incomingStream)
-
         this.incomingStream.letter = e.target.value.replace(this.incomingStream.value.at(-1), "").toUpperCase()
         this.incomingStream.letterArray = [...this.incomingStream.letterArray, this.incomingStream.letter]
         this.incomingStream.value = [...this.incomingStream.value, e.target.value]
@@ -119,13 +61,14 @@ class abcde extends Component {
         this.gameLogic()
     }
 
-    resetGame() {
+    // reset the game 
+    gameReset() {
         // clear all input fields
         Array.from(document.querySelectorAll("input")).forEach(
             input => (input.value = "")
         );
 
-        
+        // change all in alphabet dictionary to false and red colour
         Object.keys(this.alphabet).map(item => {
             this.alphabet[item].state = false
         })
@@ -133,16 +76,7 @@ class abcde extends Component {
         this.gameStarting = true
         this.nextLetterIterator = 0
         
-
         console.log('Your input value is: ' + this.incomingStream.value)
-        
-        // const removeDiv = useCallback((itemId) => {
-        //     // filter out the div which matches the ID
-        //     setItems(items.filter((id) => id !== itemId));
-        //   }, [items]);
-
-        // removeDiv('LetterTime')
-
         
         // empty state array
         return(this.setState({
@@ -153,25 +87,29 @@ class abcde extends Component {
     }
 
 
-    // gameEnd() {
+    gameEnd() {
+        //
 
+        // disable typing
+        
+        // clear alphabet
+        
+        // show total time
+        
+        // press to reset game
 
-    //     // press to reset game
-    // }
+        // return{
+        //     return(
+        //         pass
+        //         // <input id='inputField' type="text" onChange={this.handleChange} onKeyUp={this.updateState} disable={true}></input>
+        //     )
+        // }
+
+    }
 
     updateState() {
         console.log('updateState now')
-
-        // this.alphabet.setState(
-        //     this.alphabet[this.nextLetterIterator - 1].state = true
-
-        // )
-        // this.incomingStream.letter
-       // empty state array
-    //    return(
-           this.setState({1:"1"})
-
-    //    )
+        this.setState({1:"1"})
     }
 
 
@@ -180,56 +118,35 @@ class abcde extends Component {
     }
 
     gameLogic() {
-        // this.alphabet 
-
-        // this.incomingStream
         let latestLetter = this.incomingStream.letter
 
         // check it is  letter
         console.log("letter", latestLetter, this.nextLetterIterator)
 
-
-
-        // if ( latestLetter && latestLetter.length === 1 && latestLetter.match(/[a-z]/i) ){
-        //     this.currentLetter = latestLetter
-        // }
-
         // if letter is A, start game
         if(latestLetter === 'A' && this.gameStarting){
             this.initialTime = new Date().getTime()
-            
             this.alphabet[this.nextLetterIterator].state = true
-
-            
-            
             this.nextLetterIterator = this.nextLetterIterator + 1
             this.gameStarting = false 
             console.log('start game', this.alphabet)
         }
 
-
-
         console.log("INCREMENT", latestLetter + " ", this.alphabet[this.nextLetterIterator].letter)
+        // if new letter is the expected next letter
         if( (latestLetter + " ") === this.alphabet[this.nextLetterIterator].letter ) {
-
-
             console.log("we should only be here if correct: ", latestLetter)
+            // if this next letter is not already done
             if( this.alphabet[this.nextLetterIterator - 1].state === true ){
-
                 this.alphabet[this.nextLetterIterator].state = true
-
                 this.nextLetterIterator = this.nextLetterIterator + 1
-
+                // if new letter is z, then end the game
                 if( latestLetter === 'Z' ){
                     console.log('game end')
                     this.gameEnd()
-                    
                 }
             }
-
         }
-
-
     }
 
     setStyle(name, item) {
@@ -281,7 +198,7 @@ class abcde extends Component {
 
                 <h3>The goal of this game is to see how fast a person can type the english alphabet</h3>
 
-                <button id='resetGame' type="submit" onClick={this.resetGame} >Reset Game</button>
+                <button id='gameReset' type="submit" onClick={this.gameReset} >Reset Game</button>
 
                 <div id='alphabet' onKeyUp={this.displayAlphabet()}></div>
                 {this.displayAlphabet()}

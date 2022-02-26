@@ -13,6 +13,10 @@ class abcde extends Component {
             time: '',
         }
 
+        this.state = 
+            {
+                disabledTyping:false
+            }
         // callback functions, this binding is necessary to make 'this' work in the callback
         this.gameReset = this.gameReset.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -83,6 +87,7 @@ class abcde extends Component {
             value: "",
             letter: "",
             time: "",
+            disabledTyping: false,
         }))
     }
 
@@ -91,6 +96,7 @@ class abcde extends Component {
         //
 
         // disable typing
+        this.setState({disabledTyping: true})
         
         // clear alphabet
         
@@ -104,6 +110,7 @@ class abcde extends Component {
         //         // <input id='inputField' type="text" onChange={this.handleChange} onKeyUp={this.updateState} disable={true}></input>
         //     )
         // }
+
 
     }
 
@@ -206,7 +213,13 @@ class abcde extends Component {
                 <br></br>
                 {/* <input id='inputField' type="text" onChange={this.handleChange} ref={(input) => this.myinput = input} /> */}
                 {/* <input id='inputField' type="text" onChange={this.handleChange} ></input> */}
-                <input id='inputField' type="text" onChange={this.handleChange} onKeyUp={this.updateState}></input>
+                <input 
+                    id='inputField' 
+                    type="text" 
+                    onChange={this.handleChange} 
+                    onKeyUp={this.updateState}
+                    disabledTyping={(this.state.disabledTyping)? "disabledTyping" : ""}
+                />
 
                 <ul>{this.incomingStream.letterArray.at(-1)}  {this.incomingStream.time.at(-1)}</ul>
 
@@ -220,14 +233,6 @@ class abcde extends Component {
         )
     }
 }
-
-
-
-
-
-
-
-
 
 
 

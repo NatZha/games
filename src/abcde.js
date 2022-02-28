@@ -15,7 +15,7 @@ class abcde extends Component {
 
         this.state = 
             {
-                disabled:false
+                typingDisabled:false
             }
         // callback functions, this binding is necessary to make 'this' work in the callback
         this.gameReset = this.gameReset.bind(this);
@@ -23,6 +23,8 @@ class abcde extends Component {
         this.updateState = this.updateState.bind(this);
         this.nextLetterIterator = 0
         this.gameStarting = true
+        this.runningTime = 0
+        this.incrTime = 0
         
         this.alphabet = [
             { letter: 'A ', state: false },
@@ -75,11 +77,15 @@ class abcde extends Component {
         // change all in alphabet dictionary to false and red colour
         Object.keys(this.alphabet).map(item => {
             this.alphabet[item].state = false
+            this.alphabet[item].time_running = NaN
+            this.alphabet[item].time_incr = NaN
         })
         
         this.gameStarting = true
         this.nextLetterIterator = 0
-        
+        this.runningTime = 0
+        this.incrTime = 0
+
         console.log('Your input value is: ' + this.incomingStream.value)
         
         // empty state array
@@ -87,7 +93,7 @@ class abcde extends Component {
             value: "",
             letter: "",
             time: "",
-            disabled: false,
+            typingDisabled: false,
         }))
     }
 
@@ -96,11 +102,12 @@ class abcde extends Component {
         //
 
         // disable typing
-        this.setState({disabled: true})
+        this.setState({typingDisabled: true})
         
         // clear alphabet
         
         // show total time
+        // <p>"Total Time:" {this.runningTime} </p>
         
         // press to reset game
 
@@ -120,9 +127,9 @@ class abcde extends Component {
     }
 
 
-    runningTime() {
-        return new Date().getTime() - this.initialTime
-    }
+    // runningTime() {
+    //     return new Date().getTime() - this.initialTime
+    // }
 
     gameLogic() {
         let latestLetter = this.incomingStream.letter
@@ -134,18 +141,26 @@ class abcde extends Component {
         if(latestLetter === 'A' && this.gameStarting){
             this.initialTime = new Date().getTime()
             this.alphabet[this.nextLetterIterator].state = true
+            this.alphabet[this.nextLetterIterator].time_running = 0
+            this.alphabet[this.nextLetterIterator].time_incr = 0
             this.nextLetterIterator = this.nextLetterIterator + 1
             this.gameStarting = false 
-            console.log('start game', this.alphabet)
+            console.log('start game', this.alphabet, this.initialTime)
         }
 
-        console.log("INCREMENT", latestLetter + " ", this.alphabet[this.nextLetterIterator].letter)
         // if new letter is the expected next letter
         if( (latestLetter + " ") === this.alphabet[this.nextLetterIterator].letter ) {
             console.log("we should only be here if correct: ", latestLetter)
             // if this next letter is not already done
             if( this.alphabet[this.nextLetterIterator - 1].state === true ){
+                // timing
+                this.incrTime = this.incomingStream.time.at(-1) - this.incomingStream.time[this.incomingStream.time.length - 2]
+                this.incrTime = this.incrTime || 0
+                this.runningTime = this.runningTime + this.incrTime
+
                 this.alphabet[this.nextLetterIterator].state = true
+                this.alphabet[this.nextLetterIterator].time_running = this.runningTime
+                this.alphabet[this.nextLetterIterator].time_incr = this.incrTime
                 this.nextLetterIterator = this.nextLetterIterator + 1
                 // if new letter is z, then end the game
                 if( latestLetter === 'Z' ){
@@ -154,6 +169,7 @@ class abcde extends Component {
                 }
             }
         }
+        console.log("alphabet", this.alphabet)
     }
 
     setStyle(name, item) {
@@ -161,6 +177,8 @@ class abcde extends Component {
             return { color: this.alphabet[item].state ? 'green' : 'red' }
         }
     }
+
+
 
     displayAlphabet() {
         return (
@@ -205,7 +223,13 @@ class abcde extends Component {
 
                 <h3>The goal of this game is to see how fast a person can type the english alphabet</h3>
 
-                <button id='gameReset' type="submit" onClick={this.gameReset} >Reset Game</button>
+                <button 
+                    id='gameReset' 
+                    type="submit" 
+                    onClick={this.gameReset} 
+                >
+                    Reset Game
+                </button>
 
                 <div id='alphabet' onKeyUp={this.displayAlphabet()}></div>
                 {this.displayAlphabet()}
@@ -218,7 +242,7 @@ class abcde extends Component {
                     type="text" 
                     onChange={this.handleChange} 
                     onKeyUp={this.updateState}
-                    disabled={(this.state.disabled)? "disabled" : ""}
+                    disabled={(this.state.typingDisabled)? "disabled" : ""}
                 />
 
                 <ul>{this.incomingStream.letterArray.at(-1)}  {this.incomingStream.time.at(-1)}</ul>

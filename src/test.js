@@ -1,8 +1,9 @@
+import { Component } from 'react';
 import React from 'react'
 import './App.js';
 
 
-function Home() {
+function test() {
     return (
         <div>
             <h2>HOME</h2>
@@ -15,9 +16,7 @@ function Home() {
                 </li>
 
                 testestestestes
-                <li>
-                    <a href="/games/test"> test</a>
-                </li>
+
 
                 <li>
                     <a href="/games/abcde"> ABCDE Game</a>
@@ -34,4 +33,5 @@ function Home() {
     )
 }
 
-export default Home
+
+export default test

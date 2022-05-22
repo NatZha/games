@@ -6,7 +6,7 @@ import './App.js';
 function test() {
     return (
         <div>
-            <h2>HOME</h2>
+            <h2>TEST FILE</h2>
             <ul>
                 <li>
                     <a href="/games/tictactoe"> TicTacToe1 </a>

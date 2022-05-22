@@ -8,19 +8,19 @@ function Home() {
             <h2>HOME</h2>
             <ul>
                 <li>
-                    <a href="/games/tictactoe"> TicTacToe1 </a>
+                    <a href="/games/tictactoe.html"> TicTacToe1 </a>
                 </li>
                 <li>
-                    <a href="/games/tictactoe2"> TicTacToe2 </a>
+                    <a href="/games/tictactoe2.html"> TicTacToe2 </a>
                 </li>
 
                 testestestestes
                 <li>
-                    <a href="/games/test"> test</a>
+                    <a href="/games/test.html"> test</a>
                 </li>
 
                 <li>
-                    <a href="/games/abcde"> ABCDE Game</a>
+                    <a href="/games/abcde.hhtml"> ABCDE Game</a>
                 </li>
             </ul>
 

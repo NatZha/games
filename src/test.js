@@ -9,17 +9,17 @@ function test() {
             <h2>TEST FILE</h2>
             <ul>
                 <li>
-                    <a href="/games/tictactoe"> TicTacToe1 </a>
+                    <a href="/games/tictactoe.html"> TicTacToe1 </a>
                 </li>
                 <li>
-                    <a href="/games/tictactoe2"> TicTacToe2 </a>
+                    <a href="/games/tictactoe2.html"> TicTacToe2 </a>
                 </li>
 
                 testestestestes
 
 
                 <li>
-                    <a href="/games/abcde"> ABCDE Game</a>
+                    <a href="/games/abcde.html"> ABCDE Game</a>
                 </li>
             </ul>
 
